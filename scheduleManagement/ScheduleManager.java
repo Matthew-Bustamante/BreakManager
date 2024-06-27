@@ -43,12 +43,33 @@ public class ScheduleManager {
 		c.close();
 	}
 	
-	public void updateSchedule() {
+	public void updateSchedule(String currentDate, String newDate)throws SQLException {
+		DatabaseConnection dbConnect = new DatabaseConnection();
+		dbConnect.startConnection();
+		Connection c = dbConnect.getConnection();
 		
+		//Statement s = c.createStatement();
+		PreparedStatement preparedStatement = c.prepareStatement("UPDATE schedules SET date = ? WHERE date = ? ");
+		preparedStatement.setString(1, newDate);
+		preparedStatement.setString(2,  currentDate);
+		preparedStatement.executeUpdate();
+		
+		preparedStatement.close();
+		c.close();
 	}
 	
-	public void deleteSchedule() {
+	public void deleteSchedule(String date)throws SQLException {
+		DatabaseConnection dbConnect = new DatabaseConnection();
+		dbConnect.startConnection();
+		Connection c = dbConnect.getConnection();
 		
+		//Statement s = c.createStatement();
+		PreparedStatement preparedStatement = c.prepareStatement("DELETE FROM schedules WHERE date = ?");
+		preparedStatement.setString(1, date);
+		preparedStatement.executeUpdate();
+		System.out.println("Schedule Successfully Deleted" + "\n");
+		preparedStatement.close();
+		c.close();
 	}
 	
 }
