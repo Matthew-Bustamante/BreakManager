@@ -28,10 +28,19 @@ public class DatabaseConnection {
 	 * @param username of the user
 	 * @param password of the user
 	 */
-	public void setConnection(String url, String username, String password) {
+	public void startConnection() {
 		try {
+			ReadPropertiesFile properties = new ReadPropertiesFile();
+			properties.readPropertiesFile();
+			
+			String url = properties.getCredentialsOne();
+			String username = properties.getCredentialsTwo();
+			String password = properties.getCredentialsThree();
 			dbConnection = DriverManager.getConnection(url, username, password);
-			System.out.println("Connection Successful");
+			//System.out.println("Connection Successful");
+			
+			
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
