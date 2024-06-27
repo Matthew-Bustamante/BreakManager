@@ -6,12 +6,23 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import databaseManagement.DatabaseConnection;
+
+/**
+ * ScheduleManager class manages CRUD methods for the schedule table in the database.
+ * @author Matthew-Bustamante
+ *
+ */
 public class ScheduleManager {
 	private Connection dbConnection;
 	public ScheduleManager() {
 		
 	}
 	
+	/**
+	 * Creates a new schedule in the database
+	 * @param String date
+	 * @throws SQLException
+	 */
 	public void createSchedule(String date)throws SQLException {
 		DatabaseConnection dbConnect = new DatabaseConnection();
 		dbConnect.startConnection();
@@ -26,7 +37,10 @@ public class ScheduleManager {
 		c.close();
 	}
 	
-	
+	/**
+	 * Prints out all schedules in the database
+	 * @throws SQLException
+	 */
 	public void readSchedule() throws SQLException{
 		DatabaseConnection dbConnect = new DatabaseConnection();
 		dbConnect.startConnection();
@@ -43,6 +57,12 @@ public class ScheduleManager {
 		c.close();
 	}
 	
+	/**
+	 * Updates a schedule date in the database
+	 * @param String currentDate
+	 * @param String newDate
+	 * @throws SQLException
+	 */
 	public void updateSchedule(String currentDate, String newDate)throws SQLException {
 		DatabaseConnection dbConnect = new DatabaseConnection();
 		dbConnect.startConnection();
@@ -58,6 +78,11 @@ public class ScheduleManager {
 		c.close();
 	}
 	
+	/**
+	 * Deletes a schedule from the database
+	 * @param String date
+	 * @throws SQLException
+	 */
 	public void deleteSchedule(String date)throws SQLException {
 		DatabaseConnection dbConnect = new DatabaseConnection();
 		dbConnect.startConnection();
