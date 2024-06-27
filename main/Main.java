@@ -1,5 +1,11 @@
 package main;
 import databaseManagement. * ;
+/**
+ * Main class that will create and initialize objects as well as contain the UI
+ * for the application
+ * @author Matthew-Bustamante
+ *
+ */
 public class Main {
 	// Main Method
 	public static void main(String[] args) {
