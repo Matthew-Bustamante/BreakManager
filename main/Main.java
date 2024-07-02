@@ -29,7 +29,7 @@ public class Main {
 			System.out.println("3) Exit");
 			String input = sc.nextLine();
 			
-			//-----------------------------Schedule Manager Menu----------------------------
+			//-----------------------------Schedule Manager Menu----------------------------//
 			if(input.equals("1")) {
 				boolean isExitTwo = true;
 				while(isExitTwo) {
@@ -73,13 +73,18 @@ public class Main {
 						isExitTwo = false;
 						break;
 					}
+					else {
+						System.out.println("Invalid Option Please Try Again");
+					}
 				}
 			}
-			//-------------------------------------------------------------------------
+			//-------------------------------------------------------------------------//
 			
+			
+			//---------------------Employee Manager Menu----------------------------------//
 			if(input.equals("2")) {
 				boolean isExitThree = true;
-				
+			
 				while(isExitThree) {
 					System.out.println("Welcome to the Employee Manager Please Select an Option: ");
 					System.out.println("1) Add new employee");
@@ -89,34 +94,68 @@ public class Main {
 					System.out.println("5) Go Back");
 					String input3 = sc.nextLine();
 					
+					// -----------CREATE A NEW EMPLOYEE-------------//
 					if(input3.equals("1")) {
 						System.out.println("Enter a name of Employee: ");
 						String inputName = sc.nextLine();
+						System.out.println("Employees Was Successfully Created");
 						em.createEmployee(inputName);
 					}
+					//--------------------------------------------------//
 					
-					if(input3.equals("2")) {
+					//-------------READ ALL EMPLOYEES------------------//
+					else if(input3.equals("2")) {
 						em.readEmployee();
 					}
-					
-					if(input3.equals("3")) {
+					//--------------------------------------------------//
+					//--------------UPDATE EMPLOYEES---------------//
+					else if(input3.equals("3")) {
 						System.out.println("Enter an existing Employee Name: ");
 						String currentName = sc.nextLine();
-						System.out.println("Enter a New Employee Name: ");
-						String newName = sc.nextLine();
-						em.updateEmployee(currentName, newName);
+						if(em.employeeExists(currentName)) {
+							System.out.println("Enter a New Employee Name: ");
+							String newName = sc.nextLine();
+							em.updateEmployee(currentName, newName);
+						}
+						else {
+							System.out.println("Employee: '" + currentName +"' does not exist please try again");
+						}
+						
 					}
-					if(input3.equals("4")) {
+					//--------------------------------------------------------------------------------------------//
+					
+					//---------------DELETE EMPLOYEES------------------------//
+					else if(input3.equals("4")) {
 						System.out.println("Enter an existing Employee Name: ");
 						String inputName = sc.nextLine();
-						em.deleteEmployee(inputName);
+						
+						if(em.employeeExists(inputName)) {
+							System.out.println("Are you sure you want to Delete Employee:? (Y/N)");
+							String inputConfirmation = sc.nextLine();
+							if(inputConfirmation.equals("Y")) {
+								em.deleteEmployee(inputName);
+								System.out.println("Employee was Successfully Deleted");
+							}
+							else {
+								System.out.println("Employee was not Deleted Returning Back to Employee Manager");
+							}
+						}
+						else {
+							System.out.println("Employee: '" + inputName +"' does not exist please try again");
+						}
+						//-----------------------------------------------------------------------------------------//
+						
 					}
-					if(input3.equals("5")) {
+					else if(input3.equals("5")) {
 						isExitThree = false;
 						break;
 					}
+					else {
+						System.out.println("Invalid Option Please Try Again");
+					}
 				}
 			}
+			//-----------------------------------------------------------------------------------------//
 			
 			
 			
@@ -124,6 +163,9 @@ public class Main {
 			if(input.equals("3")) {
 				System.out.println("Goodbye!!");
 				break;
+			}
+			else {
+				System.out.println("Invalid Option Please Try Again");
 			}
 		}
 	}

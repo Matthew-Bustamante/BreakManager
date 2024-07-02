@@ -8,12 +8,25 @@ import java.sql.Statement;
 
 import databaseManagement.DatabaseConnection;
 
+/**
+ * EmployeeManager class that handles the creation of new employees, views employees,
+ * updates employee information, and removes employees.
+ * @author Matthew-Bustamante
+ *
+ */
 public class EmployeeManager {
 	
+	/**
+	 * Constructor
+	 */
 	public EmployeeManager() {
 		
 	}
-	
+	/**
+	 * Creates a new employee in the database and sets their start_time and end_time to NULL
+	 * @param name of employees
+	 * @throws SQLException
+	 */
 	public void createEmployee(String name)throws SQLException {
 		DatabaseConnection dbConnect = new DatabaseConnection();
 		dbConnect.startConnection();
@@ -31,7 +44,7 @@ public class EmployeeManager {
 	}
 	
 	/**
-	 * Prints out all schedules in the database
+	 * Prints out all employees in the database
 	 * @throws SQLException
 	 */
 	public void readEmployee() throws SQLException{
@@ -41,7 +54,7 @@ public class EmployeeManager {
 		
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery("SELECT * FROM employees");
-		System.out.println("-------------Current Schedules------------------");
+		System.out.println("-------------Current Employees------------------");
 		while(rs.next()) {
 			System.out.println("Employee Name: " + rs.getString("name"));
 		}
@@ -51,9 +64,9 @@ public class EmployeeManager {
 	}
 	
 	/**
-	 * Updates a schedule date in the database
-	 * @param String currentDate
-	 * @param String newDate
+	 * Updates an employee's name in the database
+	 * @param String currentName
+	 * @param String newName
 	 * @throws SQLException
 	 */
 	public void updateEmployee(String currentName, String newName)throws SQLException {
@@ -72,8 +85,8 @@ public class EmployeeManager {
 	}
 	
 	/**
-	 * Deletes a schedule from the database
-	 * @param String date
+	 * Deletes an employee from the database
+	 * @param String employee name
 	 * @throws SQLException
 	 */
 	public void deleteEmployee(String name)throws SQLException {
@@ -89,4 +102,36 @@ public class EmployeeManager {
 		preparedStatement.close();
 		c.close();
 	}
-}
+	
+	/**
+	 * checks if the employee given the name is in the database.
+	 * If the employee is in the database the method will return true.
+	 * If the employee is not in the database the method will retun false.
+	 * @param name of employee
+	 * @return returns true if employee is in database or returns false if employee is not in database
+	 * @throws SQLException
+	 */
+	public boolean employeeExists(String name)throws SQLException {
+		DatabaseConnection dbConnect = new DatabaseConnection();
+		dbConnect.startConnection();
+		Connection c = dbConnect.getConnection();
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("SELECT * FROM employees WHERE name = '" + name +"';");
+		
+		//if the result set has a next row we can assume that the employee exists in the database and return true
+		if(rs.next()) {
+			s.close();
+			c.close();
+			return true;
+		}
+		// the next() method above will return false if query statement returns nothing.
+		// If that's the case we can assume that the employee is not in the database so we'll return false
+		else {
+			s.close();
+			c.close();
+			return false;
+			}
+		}
+		
+	}
+
