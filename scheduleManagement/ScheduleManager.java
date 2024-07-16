@@ -96,5 +96,33 @@ public class ScheduleManager {
 		preparedStatement.close();
 		c.close();
 	}
+	/**
+	 * scheduleExists method that runs a select statement in the database to see if a given schedule exists
+	 * in the database.  If so the method returns true if not then the method returns false
+	 * @param date of the schedule
+	 * @return true if schedule exists in DB returns false if schedule does not exists in the DB
+	 * @throws SQLException
+	 */
+	public boolean scheduleExists(String date)throws SQLException {
+		DatabaseConnection dbConnect = new DatabaseConnection();
+		dbConnect.startConnection();
+		Connection c = dbConnect.getConnection();
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("SELECT * FROM schedules WHERE date = '" + date +"';");
+		
+		//if the result set has a next row we can assume that the schedule exists in the database and return true
+		if(rs.next()) {
+			s.close();
+			c.close();
+			return true;
+		}
+		// the next() method above will return false if query statement returns nothing.
+		// If that's the case we can assume that the schedule is not in the database so we'll return false
+		else {
+			s.close();
+			c.close();
+			return false;
+			}
+	}
 	
 }

@@ -48,28 +48,51 @@ public class Main {
 						sm.createSchedule(inputDate);
 					}
 					
-					if(input2.equals("2")) {
+					else if(input2.equals("2")) {
 						sm.readSchedule();
 					}
 					
-					if (input2.equals("3")){
-						System.out.println("Enter an existing Date in the Format yyyyy-mm-dd: ");
+					else if (input2.equals("3")){
+						System.out.println("Enter an existing Date in the Format yyyy-mm-dd: ");
 						String currentDate = sc.nextLine();
-						System.out.println("Enter a new date in the formate yyyy-mm-dd: ");
-						String newDate = sc.nextLine();
-						sm.updateSchedule(currentDate, newDate);
+						if(sm.scheduleExists(currentDate)) {
+							System.out.println("Enter a New Schedule Date in the Formate yyyy-mm-dd: ");
+							String newDate = sc.nextLine();
+							sm.updateSchedule(currentDate, newDate);
+							System.out.println("Schedule Successfully Updated");
+						}
+						else {
+							System.out.println("Schedule Date: '" + currentDate +"' does not exist please try again");
+						}
+						//System.out.println("Enter a new date in the formate yyyy-mm-dd: ");
+						//String newDate = sc.nextLine();
+						//sm.updateSchedule(currentDate, newDate);
 					}
-					if (input2.equals("4")){
+					else if (input2.equals("4")){
 						System.out.println("Enter an existing Date to Delete in the Format yyyyy-mm-dd: ");
 						String inputDate = sc.nextLine();
-						sm.deleteSchedule(inputDate);
+						if(sm.scheduleExists(inputDate)) {
+							System.out.println("Are you sure you want to delete schedule? (Y/N)");
+							String inputConfirm = sc.nextLine();
+							if(inputConfirm.equals("Y")) {
+								sm.deleteSchedule(inputDate);
+								System.out.println("Schedule Sucessfully Deleted");
+							}
+							else {
+								System.out.println("Schedule was not deleted returing back to schedule manager");
+							}
+						}
+						else {
+							System.out.println("Schedule Date: '" + inputDate +"' does not exist please try again");
+						}
+						
 					}
-					if (input2.equals("5")){
+					else if (input2.equals("5")){
 						System.out.println("Not Implemented Yet");
 						
 					}
 					
-					if(input2.equals("6")) {
+					else if(input2.equals("6")) {
 						isExitTwo = false;
 						break;
 					}
