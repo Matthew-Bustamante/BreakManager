@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import employeeManagement.EmployeeDataTransfer;
 
 import databaseManagement.DatabaseConnection;
 
@@ -19,8 +20,9 @@ public class EmployeeManager {
 	/**
 	 * Constructor
 	 */
+	
+	
 	public EmployeeManager() {
-		
 	}
 	/**
 	 * Creates a new employee in the database and sets their start_time and end_time to NULL
@@ -133,5 +135,24 @@ public class EmployeeManager {
 			}
 		}
 		
-	}
+	public EmployeeDataTransfer setEmpID(String name)throws SQLException {
+		EmployeeDataTransfer pogo = new EmployeeDataTransfer();
+				DatabaseConnection dbConnect = new DatabaseConnection();
+				dbConnect.startConnection();
+				Connection c = dbConnect.getConnection();
+				Statement s = c.createStatement();
+				ResultSet rs = s.executeQuery("SELECT employee_id FROM employees WHERE name = '" + name +"';");
+				while(rs.next()) {
+					int employeeID = rs.getInt("employee_id");
+					pogo.setEmployeeID(employeeID);
+				}
+				c.close();
+				s.close();
+				rs.close();
+				return pogo;
+				
+			}
+			
+		}
+	
 

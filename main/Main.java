@@ -2,7 +2,9 @@ package main;
 import java.util.Scanner;
 
 import databaseManagement. * ;
+import employeeManagement.EmployeeDataTransfer;
 import employeeManagement.EmployeeManager;
+import scheduleManagement.ScheduleDataTransfer;
 import scheduleManagement.ScheduleManager;
 import java.sql.SQLException;
 /**
@@ -88,7 +90,45 @@ public class Main {
 						
 					}
 					else if (input2.equals("5")){
-						System.out.println("Not Implemented Yet");
+						System.out.println("Select a Schedule or press 1 to exit");
+						sm.readSchedule();
+						boolean isExitThree = true;
+						while(isExitThree) {
+							String userInput = sc.nextLine();
+							boolean scheduleInDB = sm.scheduleExists(userInput);
+							
+							if(scheduleInDB == true) {
+								//set the schedule and retireve schedule ID
+								ScheduleDataTransfer scheduleResults = sm.setScheduleID(userInput);
+								
+								System.out.println("Select employees and type done when done");
+								em.readEmployee();
+								boolean isExitFour = true;
+								while(isExitFour) {
+									String userInputTwo = sc.nextLine();
+									boolean employeeInDB = em.employeeExists(userInputTwo);
+									
+									if(employeeInDB == true) {
+										EmployeeDataTransfer employeeResults = em.setEmpID(userInputTwo);
+										sm.addEmployeeToSchedule(employeeResults.getEmployeeID(), scheduleResults.getScheduleID());
+									}
+									
+									if(userInput.equals("done")) {
+										isExitFour = false;
+										break;
+									}
+								}
+							}
+							else if(scheduleInDB == false) {
+								System.out.println("Schedule Does Not Exist");
+							}
+								
+							else if(userInput.equals("1")) {
+								isExitThree = false;
+								break;
+								}
+							}
+						
 						
 					}
 					

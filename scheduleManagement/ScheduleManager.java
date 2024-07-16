@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import employeeManagement. *;
 
 import databaseManagement.DatabaseConnection;
 
@@ -14,8 +15,9 @@ import databaseManagement.DatabaseConnection;
  */
 public class ScheduleManager {
 	private Connection dbConnection;
+	private ScheduleDataTransfer pogo;
 	public ScheduleManager() {
-		
+		pogo = new ScheduleDataTransfer();
 	}
 	
 	/**
@@ -123,6 +125,38 @@ public class ScheduleManager {
 			c.close();
 			return false;
 			}
+	}
+	
+	public ScheduleDataTransfer setScheduleID(String date)throws SQLException {
+		//ScheduleDataTransfer pogo = new ScheduleDataTransfer();
+		DatabaseConnection dbConnect = new DatabaseConnection();
+		dbConnect.startConnection();
+		Connection c = dbConnect.getConnection();
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("SELECT schedule_id FROM schedules WHERE date = '" + date +"';");
+		while(rs.next()) {
+			pogo.setScheduleID(rs.getInt("schedule_id"));
+		}
+		c.close();
+		s.close();
+		rs.close();
+		return pogo;
+		
+	}
+	
+	public void addEmployeeToSchedule(int scheduleID, int employeeID)throws SQLException {
+		
+		DatabaseConnection dbConnect = new DatabaseConnection();
+		dbConnect.startConnection();
+		Connection c = dbConnect.getConnection();
+		
+		//Statement s = c.createStatement();
+		PreparedStatement preparedStatement = c.prepareStatement("INSERT INTO schedules_employees (schedule_id, employee_id) VALUES (?, ?)");
+		preparedStatement.setInt(1, scheduleID);
+		preparedStatement.setInt(2, employeeID);
+		preparedStatement.executeUpdate();
+		preparedStatement.close();
+		c.close();
 	}
 	
 }
