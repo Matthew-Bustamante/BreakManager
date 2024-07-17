@@ -151,7 +151,7 @@ public class ScheduleManager {
 		Connection c = dbConnect.getConnection();
 		
 		//Statement s = c.createStatement();
-		PreparedStatement preparedStatement = c.prepareStatement("INSERT INTO schedules_employees (schedule_id, employee_id) VALUES (?, ?)");
+		PreparedStatement preparedStatement = c.prepareStatement("INSERT INTO schedules_employees (schedule_id, employee_id) VALUES (?, ?);");
 		preparedStatement.setInt(1, scheduleID);
 		preparedStatement.setInt(2, employeeID);
 		preparedStatement.executeUpdate();
