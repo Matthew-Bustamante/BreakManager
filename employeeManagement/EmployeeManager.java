@@ -152,6 +152,22 @@ public class EmployeeManager {
 				return pogo;
 				
 			}
+	
+	public void updateEmployeeTime(String startTime, String endTime, String name)throws SQLException {
+		DatabaseConnection dbConnect = new DatabaseConnection();
+		dbConnect.startConnection();
+		Connection c = dbConnect.getConnection();
+		
+		//Statement s = c.createStatement();
+		PreparedStatement preparedStatement = c.prepareStatement("UPDATE employees SET start_time = ?, end_time = ? WHERE name = ? ;");
+		preparedStatement.setString(1, startTime);
+		preparedStatement.setString(2,  endTime);
+		preparedStatement.setString(3, name);
+		preparedStatement.executeUpdate();
+		
+		preparedStatement.close();
+		c.close();
+	}
 			
 		}
 	

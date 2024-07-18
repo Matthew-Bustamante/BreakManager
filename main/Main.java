@@ -105,18 +105,23 @@ public class Main {
 								while(isExitFour) {
 									System.out.println("Select employees and type done when done");
 									em.readEmployee();
-									String userInputTwo = sc.nextLine();
-									boolean employeeInDB = em.employeeExists(userInputTwo);
+									String userInputEmployeeName = sc.nextLine();
+									boolean employeeInDB = em.employeeExists(userInputEmployeeName);
 									
 									if(employeeInDB == true) {
-										EmployeeDataTransfer employeeResults = em.setEmpID(userInputTwo);
+										EmployeeDataTransfer employeeResults = em.setEmpID(userInputEmployeeName);
 										int employeeID = employeeResults.getEmployeeID();
 										int scheduleID = scheduleResults.getScheduleID();
+										System.out.println("Please Enter Employee's Start Time In the Format HH:MM:SS");
+										String userInputStartTime = sc.nextLine();
+										System.out.println("Please Enter Employee's End Time In the Format HH:MM:SS");
+										String userInputEndTime = sc.nextLine();
+										em.updateEmployeeTime(userInputStartTime, userInputEndTime, userInputEmployeeName);
 										sm.addEmployeeToSchedule(scheduleID, employeeID);
 										System.out.println("Employee Added to Schedule");
 									}
 									
-									if(userInputTwo.equals("done")) {
+									if(userInputEmployeeName.equals("done")) {
 										isExitFour = false;
 										break;
 									}
