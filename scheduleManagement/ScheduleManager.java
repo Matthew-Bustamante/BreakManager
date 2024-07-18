@@ -16,6 +16,14 @@ import databaseManagement.DatabaseConnection;
 public class ScheduleManager {
 	private Connection dbConnection;
 	private ScheduleDataTransfer pogo;
+	private static String sqlQueryForDetails = 
+			"SELECT schedules.date,employees.name, employees.start_time, employees.end_time"
+			+ " FROM employees"
+			+ " INNER JOIN schedules_employees"
+			+" ON schedules_employees.employee_id = employees.employee_id"
+			+ " INNER JOIN schedules"
+			+ " ON schedules_employees.schedule_id = schedules.schedule_id"
+			+ " WHERE schedules.schedule_id = ?;";
 	public ScheduleManager() {
 		pogo = new ScheduleDataTransfer();
 	}
@@ -159,4 +167,28 @@ public class ScheduleManager {
 		c.close();
 	}
 	
+	public void viewScheduleDetails(int scheduleID)throws SQLException {
+		scheduleID = pogo.getScheduleID();
+		//String stringSchedule_id = String.valueOf(schedule_id);
+		DatabaseConnection dbConnect = new DatabaseConnection();
+		dbConnect.startConnection();
+		Connection c = dbConnect.getConnection();
+		
+		PreparedStatement preparedStatement = c.prepareStatement(sqlQueryForDetails);
+		preparedStatement.setInt(1, scheduleID);
+		ResultSet rs = preparedStatement.executeQuery();
+		System.out.println("--------Schedule Details-----------");
+		while(rs.next()) {
+			//String date = rs.getString("date");
+			String name = rs.getString("name");
+			String startTime = rs.getString("start_time");
+			String endTime = rs.getString("end_time");
+			
+			
+			System.out.println("|Employee Name: " + name + " | Start Time: " + startTime + "| End Time: " + endTime + "|");
+		}
+		System.out.print("---------------------------------------------" + "\n");
+		
+		c.close();
+	}
 }

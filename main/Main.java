@@ -38,10 +38,11 @@ public class Main {
 					System.out.println("Welcome to the Schedule Manager please select an option");
 					System.out.println("1) Create a new Schedule");
 					System.out.println("2) View all schedules");
-					System.out.println("3) Change Schedule Date");
-					System.out.println("4) Delete a schedule");
-					System.out.println("5) Add Employees to Schedule");
-					System.out.println("6) Go back");
+					System.out.println("3) View a schedule details");
+					System.out.println("4) Change Schedule Date");
+					System.out.println("5) Delete a schedule");
+					System.out.println("6) Add Employees to Schedule");
+					System.out.println("7) Go back");
 					String input2 = sc.nextLine();
 					
 					if(input2.equals("1")) {
@@ -54,7 +55,22 @@ public class Main {
 						sm.readSchedule();
 					}
 					
-					else if (input2.equals("3")){
+					else if (input2.equals("3")) {
+						System.out.println("Enter an Existing Schedule Date in the Format yyyy-mm-dd");
+						String inputDate = sc.nextLine();
+						
+						if(sm.scheduleExists(inputDate)) {
+							ScheduleDataTransfer scheduleResults = sm.setScheduleID(inputDate);
+							int scheduleID = scheduleResults.getScheduleID();
+							sm.viewScheduleDetails(scheduleID);
+							
+						}
+						else {
+							System.out.println("Date: " + inputDate + "Does not Exist returning back to schedule manager");
+						}
+					}
+					
+					else if (input2.equals("4")){
 						System.out.println("Enter an existing Date in the Format yyyy-mm-dd: ");
 						String currentDate = sc.nextLine();
 						if(sm.scheduleExists(currentDate)) {
@@ -70,7 +86,7 @@ public class Main {
 						//String newDate = sc.nextLine();
 						//sm.updateSchedule(currentDate, newDate);
 					}
-					else if (input2.equals("4")){
+					else if (input2.equals("5")){
 						System.out.println("Enter an existing Date to Delete in the Format yyyyy-mm-dd: ");
 						String inputDate = sc.nextLine();
 						if(sm.scheduleExists(inputDate)) {
@@ -89,7 +105,7 @@ public class Main {
 						}
 						
 					}
-					else if (input2.equals("5")){
+					else if (input2.equals("6")){
 						boolean isExitThree = true;
 						while(isExitThree) {
 							System.out.println("Select a Schedule or press 1 to exit");
@@ -140,7 +156,7 @@ public class Main {
 						
 					}
 					
-					else if(input2.equals("6")) {
+					else if(input2.equals("7")) {
 						isExitTwo = false;
 						break;
 					}
