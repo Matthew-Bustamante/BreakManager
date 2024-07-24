@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import employeeManagement.EmployeeDataTransfer;
 
 import databaseManagement.DatabaseConnection;
 
@@ -19,8 +20,9 @@ public class EmployeeManager {
 	/**
 	 * Constructor
 	 */
+	
+	
 	public EmployeeManager() {
-		
 	}
 	/**
 	 * Creates a new employee in the database and sets their start_time and end_time to NULL
@@ -132,6 +134,54 @@ public class EmployeeManager {
 			return false;
 			}
 		}
+	/**
+	 * setEmpID sets the employee ID for the employee transfer object given an employee name.  THe method then returns
+	 * this transfer object containing the data	
+	 * @param name
+	 * @return EmployeeDataTransfer object
+	 * @throws SQLException
+	 */
+	public EmployeeDataTransfer setEmpID(String name)throws SQLException {
+		EmployeeDataTransfer pogo = new EmployeeDataTransfer();
+				DatabaseConnection dbConnect = new DatabaseConnection();
+				dbConnect.startConnection();
+				Connection c = dbConnect.getConnection();
+				Statement s = c.createStatement();
+				ResultSet rs = s.executeQuery("SELECT employee_id FROM employees WHERE name = '" + name +"';");
+				while(rs.next()) {
+					int employeeID = rs.getInt("employee_id");
+					pogo.setEmployeeID(employeeID);
+				}
+				c.close();
+				s.close();
+				rs.close();
+				return pogo;
+				
+			}
+	
+	/**
+	 * updateEmployeeTime method that updates an employee's start-time and end-time in the database
+	 * @param startTime (string)
+	 * @param endTime (string)
+	 * @param name (string)
+	 * @throws SQLException
+	 */
+	public void updateEmployeeTime(String startTime, String endTime, String name)throws SQLException {
+		DatabaseConnection dbConnect = new DatabaseConnection();
+		dbConnect.startConnection();
+		Connection c = dbConnect.getConnection();
 		
+		//Statement s = c.createStatement();
+		PreparedStatement preparedStatement = c.prepareStatement("UPDATE employees SET start_time = ?, end_time = ? WHERE name = ? ;");
+		preparedStatement.setString(1, startTime);
+		preparedStatement.setString(2,  endTime);
+		preparedStatement.setString(3, name);
+		preparedStatement.executeUpdate();
+		
+		preparedStatement.close();
+		c.close();
 	}
+			
+		}
+	
 

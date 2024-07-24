@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import employeeManagement. *;
 
 import databaseManagement.DatabaseConnection;
 
@@ -14,8 +15,17 @@ import databaseManagement.DatabaseConnection;
  */
 public class ScheduleManager {
 	private Connection dbConnection;
+	private ScheduleDataTransfer pogo;
+	private static String sqlQueryForDetails = 
+			"SELECT schedules.date,employees.name, employees.start_time, employees.end_time"
+			+ " FROM employees"
+			+ " INNER JOIN schedules_employees"
+			+" ON schedules_employees.employee_id = employees.employee_id"
+			+ " INNER JOIN schedules"
+			+ " ON schedules_employees.schedule_id = schedules.schedule_id"
+			+ " WHERE schedules.schedule_id = ?;";
 	public ScheduleManager() {
-		
+		pogo = new ScheduleDataTransfer();
 	}
 	
 	/**
@@ -125,4 +135,80 @@ public class ScheduleManager {
 			}
 	}
 	
+	/**
+	 * setScheduleID this sets the id for the Data transfer object for schedules and returns
+	 * that transfer object
+	 * @param schedule date
+	 * @return data transfer object for schedules
+	 * @throws SQLException
+	 */
+	public ScheduleDataTransfer setScheduleID(String date)throws SQLException {
+		//ScheduleDataTransfer pogo = new ScheduleDataTransfer();
+		DatabaseConnection dbConnect = new DatabaseConnection();
+		dbConnect.startConnection();
+		Connection c = dbConnect.getConnection();
+		Statement s = c.createStatement();
+		ResultSet rs = s.executeQuery("SELECT schedule_id FROM schedules WHERE date = '" + date +"';");
+		while(rs.next()) {
+			pogo.setScheduleID(rs.getInt("schedule_id"));
+		}
+		c.close();
+		s.close();
+		rs.close();
+		return pogo;
+		
+	}
+	/**
+	 * addEmployeeToSchedule method that connects the ids in the junction table between employees and schedules
+	 * given an employee and a schhedule id
+	 * @param scheduleID
+	 * @param employeeID
+	 * @throws SQLException
+	 */
+	public void addEmployeeToSchedule(int scheduleID, int employeeID)throws SQLException {
+		
+		DatabaseConnection dbConnect = new DatabaseConnection();
+		dbConnect.startConnection();
+		Connection c = dbConnect.getConnection();
+		
+		//Statement s = c.createStatement();
+		PreparedStatement preparedStatement = c.prepareStatement("INSERT INTO schedules_employees (schedule_id, employee_id) VALUES (?, ?);");
+		preparedStatement.setInt(1, scheduleID);
+		preparedStatement.setInt(2, employeeID);
+		preparedStatement.executeUpdate();
+		preparedStatement.close();
+		c.close();
+	}
+	
+	/**
+	 * viewScheduleDetails method that deplays information about a schedule.
+	 * This includes the names of all employees in that schedule 
+	 * the employee's start and end-time and will display an employee's break information
+	 * @param scheduleID
+	 * @throws SQLException
+	 */
+	public void viewScheduleDetails(int scheduleID)throws SQLException {
+		scheduleID = pogo.getScheduleID();
+		//String stringSchedule_id = String.valueOf(schedule_id);
+		DatabaseConnection dbConnect = new DatabaseConnection();
+		dbConnect.startConnection();
+		Connection c = dbConnect.getConnection();
+		
+		PreparedStatement preparedStatement = c.prepareStatement(sqlQueryForDetails);
+		preparedStatement.setInt(1, scheduleID);
+		ResultSet rs = preparedStatement.executeQuery();
+		System.out.println("--------Schedule Details-----------");
+		while(rs.next()) {
+			//String date = rs.getString("date");
+			String name = rs.getString("name");
+			String startTime = rs.getString("start_time");
+			String endTime = rs.getString("end_time");
+			
+			
+			System.out.println("|Employee Name: " + name + " | Start Time: " + startTime + "| End Time: " + endTime + "|");
+		}
+		System.out.print("---------------------------------------------" + "\n");
+		
+		c.close();
+	}
 }
