@@ -134,7 +134,13 @@ public class EmployeeManager {
 			return false;
 			}
 		}
-		
+	/**
+	 * setEmpID sets the employee ID for the employee transfer object given an employee name.  THe method then returns
+	 * this transfer object containing the data	
+	 * @param name
+	 * @return EmployeeDataTransfer object
+	 * @throws SQLException
+	 */
 	public EmployeeDataTransfer setEmpID(String name)throws SQLException {
 		EmployeeDataTransfer pogo = new EmployeeDataTransfer();
 				DatabaseConnection dbConnect = new DatabaseConnection();
@@ -153,6 +159,13 @@ public class EmployeeManager {
 				
 			}
 	
+	/**
+	 * updateEmployeeTime method that updates an employee's start-time and end-time in the database
+	 * @param startTime (string)
+	 * @param endTime (string)
+	 * @param name (string)
+	 * @throws SQLException
+	 */
 	public void updateEmployeeTime(String startTime, String endTime, String name)throws SQLException {
 		DatabaseConnection dbConnect = new DatabaseConnection();
 		dbConnect.startConnection();

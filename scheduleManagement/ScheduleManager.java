@@ -135,6 +135,13 @@ public class ScheduleManager {
 			}
 	}
 	
+	/**
+	 * setScheduleID this sets the id for the Data transfer object for schedules and returns
+	 * that transfer object
+	 * @param schedule date
+	 * @return data transfer object for schedules
+	 * @throws SQLException
+	 */
 	public ScheduleDataTransfer setScheduleID(String date)throws SQLException {
 		//ScheduleDataTransfer pogo = new ScheduleDataTransfer();
 		DatabaseConnection dbConnect = new DatabaseConnection();
@@ -151,7 +158,13 @@ public class ScheduleManager {
 		return pogo;
 		
 	}
-	
+	/**
+	 * addEmployeeToSchedule method that connects the ids in the junction table between employees and schedules
+	 * given an employee and a schhedule id
+	 * @param scheduleID
+	 * @param employeeID
+	 * @throws SQLException
+	 */
 	public void addEmployeeToSchedule(int scheduleID, int employeeID)throws SQLException {
 		
 		DatabaseConnection dbConnect = new DatabaseConnection();
@@ -167,6 +180,13 @@ public class ScheduleManager {
 		c.close();
 	}
 	
+	/**
+	 * viewScheduleDetails method that deplays information about a schedule.
+	 * This includes the names of all employees in that schedule 
+	 * the employee's start and end-time and will display an employee's break information
+	 * @param scheduleID
+	 * @throws SQLException
+	 */
 	public void viewScheduleDetails(int scheduleID)throws SQLException {
 		scheduleID = pogo.getScheduleID();
 		//String stringSchedule_id = String.valueOf(schedule_id);
