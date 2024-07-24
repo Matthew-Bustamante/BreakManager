@@ -166,12 +166,24 @@ public class EmployeeManager {
 	 * @param name (string)
 	 * @throws SQLException
 	 */
-	public void updateEmployeeTime(String startTime, String endTime, String name)throws SQLException {
+	public void updateEmployeeTime(String startTime, String endTime, String name, String isStartTimeAmOrPm, String isEndTimeAmOrPm)throws SQLException {
 		DatabaseConnection dbConnect = new DatabaseConnection();
 		dbConnect.startConnection();
 		Connection c = dbConnect.getConnection();
 		
 		//Statement s = c.createStatement();
+		if(isStartTimeAmOrPm.equals("PM")) {
+			int intStartTime = Integer.parseInt(startTime.substring(0,2));
+			int intNewStartTime = intStartTime + 12;
+			String startTimeMinutes = startTime.substring(3, 5);
+			startTime = Integer.toString(intNewStartTime) + ":" + startTimeMinutes + "00";	
+		}
+		if(isEndTimeAmOrPm.equals("PM")) {
+			int intEndTime = Integer.parseInt(endTime.substring(0,2));
+			int intNewEndTime = intEndTime + 12;
+			String startTimeMinutes = startTime.substring(3, 5);
+			endTime = Integer.toString(intNewEndTime) + ":" + startTimeMinutes + "00";
+		}
 		PreparedStatement preparedStatement = c.prepareStatement("UPDATE employees SET start_time = ?, end_time = ? WHERE name = ? ;");
 		preparedStatement.setString(1, startTime);
 		preparedStatement.setString(2,  endTime);

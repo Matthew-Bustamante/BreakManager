@@ -1,6 +1,7 @@
 package main;
 import java.util.Scanner;
 
+import breakManagement.BreakManager;
 import databaseManagement. * ;
 import employeeManagement.EmployeeDataTransfer;
 import employeeManagement.EmployeeManager;
@@ -19,6 +20,7 @@ public class Main {
 		//----------------Objects------------------//
 		ScheduleManager sm = new ScheduleManager();
 		EmployeeManager em = new EmployeeManager();
+		BreakManager bm = new BreakManager();
 		//-----------------------------------------//
 		Scanner sc = new Scanner(System.in);
 		
@@ -42,7 +44,8 @@ public class Main {
 					System.out.println("4) Change Schedule Date");
 					System.out.println("5) Delete a schedule");
 					System.out.println("6) Add Employees to Schedule");
-					System.out.println("7) Go back");
+					System.out.println("7) Create Break Schedule");
+					System.out.println("8) Go back");
 					String input2 = sc.nextLine();
 					
 					if(input2.equals("1")) {
@@ -130,9 +133,13 @@ public class Main {
 										int scheduleID = scheduleResults.getScheduleID();
 										System.out.println("Please Enter Employee's Start Time In the Format HH:MM:SS");
 										String userInputStartTime = sc.nextLine();
+										System.out.println("Is This Time AM or PM? ");
+										String startTimeAMorPM = sc.nextLine();
 										System.out.println("Please Enter Employee's End Time In the Format HH:MM:SS");
 										String userInputEndTime = sc.nextLine();
-										em.updateEmployeeTime(userInputStartTime, userInputEndTime, userInputEmployeeName);
+										System.out.println("Is This Time AM or PM?");
+										String endTimeAMorPM = sc.nextLine();
+										em.updateEmployeeTime(userInputStartTime, userInputEndTime, userInputEmployeeName, startTimeAMorPM, endTimeAMorPM);
 										sm.addEmployeeToSchedule(scheduleID, employeeID);
 										System.out.println("Employee Added to Schedule");
 									}
@@ -155,8 +162,28 @@ public class Main {
 						
 						
 					}
+					else if (input2.equals("7")) {
+						boolean notExit = true;
+						while(notExit) {
+							System.out.println("Select a Schedule or press 1 to exit");
+							sm.readSchedule();
+							String userInput = sc.nextLine();
+							boolean scheduleInDB = sm.scheduleExists(userInput);
+							if(userInput.equals("1")) {
+								break;
+							}
+							
+							else if (scheduleInDB == true) {
+								ScheduleDataTransfer scheduleResults = sm.setScheduleID(userInput);
+								bm.scheduleBreaks(scheduleResults.getScheduleID());
+							}
+							else if (scheduleInDB == false) {
+								System.out.println("Schedule: " + userInput + "Does not exist please try again");
+							}
+						}
+					}
 					
-					else if(input2.equals("7")) {
+					else if(input2.equals("8")) {
 						isExitTwo = false;
 						break;
 					}

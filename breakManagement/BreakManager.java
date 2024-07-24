@@ -33,7 +33,12 @@ public class BreakManager {
 		intEndTimeMinutes = 0;
 		String employeeTime = "";
 	}
-	
+	public int evaluateTime(int time) {
+		if(time > 12) {
+			time = time - 12;
+		}
+		return time;
+	}
 	
 	public void scheduleBreaks(int scheduleID)throws SQLException {
 		//scheduleID = pogo.getScheduleID();
@@ -52,12 +57,61 @@ public class BreakManager {
 			String startTime = rs.getString("start_time");
 			String endTime = rs.getString("end_time");
 			
-			intStartTimeHours = Integer.parseInt(startTime.substring(0,1));
-			intStartTimeMinutes = Integer.parseInt(endTime.substring(3,4));
+			intStartTimeHours = Integer.parseInt(startTime.substring(0,2));
+			intStartTimeMinutes = Integer.parseInt(startTime.substring(3,5));
+			intEndTimeHours = Integer.parseInt(endTime.substring(0,2));
+			intEndTimeMinutes = Integer.parseInt(endTime.substring(3,5));
+			
+			int totalHours = intEndTimeHours - intStartTimeHours;
+			
+			intStartTimeHours = evaluateTime(intStartTimeHours);
+			intEndTimeHours = evaluateTime(intEndTimeHours);
+			
+			//if total hours are less than 4 then employee gets only one break
+			if (totalHours < 5){
+				
+				int intFirstBreak = intStartTimeHours + 2;
+				intFirstBreak = evaluateTime(intFirstBreak);
+				String strFirstBreak = intFirstBreak + ":" + startTime.substring(3,5);
+				System.out.println("|Employee Name: " + name + " | Start Time: " + startTime + " |End Time: " + endTime + " |First Break: " + strFirstBreak);
+			}
+			
+			// if total hours are greater than 5 hours but less than or equal to 6 hours
+			//then employee gets a 1st break and lunch
+			else if (totalHours >= 5 && totalHours <= 6) {
+				int intFirstBreak = intStartTimeHours + 2;
+				intFirstBreak = evaluateTime(intFirstBreak);
+				
+				int intLunch = intStartTimeHours + 4;
+				intLunch = evaluateTime(intLunch);
+				
+				String strFirstBreak = intFirstBreak + ":" + startTime.substring(3, 5);
+				String strLunch = intLunch + ":" + startTime.substring(3, 5);
+				System.out.println("|Employee Name: " + name + " | Start Time: " + startTime + " |End Time: " + endTime + " |First Break: " + strFirstBreak + " |Lunch: " + strLunch);
+			}
+			//if total hours are greater than 6 hours then 
+			//employee gets a 1st break, lunch, and a 2nd break
+			else if (totalHours > 6) {
+				int intFirstBreak = intStartTimeHours + 2;
+				intFirstBreak = evaluateTime(intFirstBreak);
+				
+				int intLunch = intStartTimeHours + 4;
+				intLunch = evaluateTime(intLunch);
+				
+				int intSecondBreak = intStartTimeHours + 6;
+				intSecondBreak = evaluateTime(intSecondBreak);
+				
+				String strFirstBreak = intFirstBreak + ":" + startTime.substring(3, 5);
+				String strLunch = intLunch + ":" + startTime.substring(3, 5);
+				String strSecondBreak = intSecondBreak + ":" + startTime.substring(3, 5);
+				System.out.println("|Employee Name: " + name + " | Start Time: " + startTime + "| End Time: " + endTime + " |First Break: " + strFirstBreak + " |Lunch: " + strLunch + " |SecondBreak:" + strSecondBreak);
+			}
 			
 		}
 
 		
 		c.close();
 	}
+	
+	
 }
