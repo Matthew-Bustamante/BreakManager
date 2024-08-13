@@ -9,7 +9,13 @@ import java.util.ArrayList;
 
 import databaseManagement.DatabaseConnection;
 import employeeManagement.*;
-
+/**
+ * BreakManager Class that schedules breaks according to an employee's start and end time.
+ * The class also handles the case in which two employees are scheduled at the same time 
+ * and will attempt to 'stagger' the breaks to prevent two employees from going to break at the same time
+ * @author Matthew-Bustamante
+ *
+ */
 public class BreakManager {
 	private int intStartTimeHours;
 	private int intStartTimeMinutes;
@@ -25,6 +31,9 @@ public class BreakManager {
 			+ " INNER JOIN schedules"
 			+ " ON schedules_employees.schedule_id = schedules.schedule_id"
 			+ " WHERE schedules.schedule_id = ?;";
+	/**
+	 * Constructor
+	 */
 	public BreakManager() {
 		breaks = new ArrayList<String>();
 		intStartTimeHours = 0;
@@ -33,6 +42,11 @@ public class BreakManager {
 		intEndTimeMinutes = 0;
 		String employeeTime = "";
 	}
+	/**
+	 * evaluate time method that acts a conversion from 24 hour time to 12 hour time
+	 * @param time (int)
+	 * @return converted Time (int)
+	 */
 	public int evaluateTime(int time) {
 		if(time > 12) {
 			time = time - 12;
@@ -40,6 +54,18 @@ public class BreakManager {
 		return time;
 	}
 	
+	/**
+	 * Schedule breaks method:
+	 * This method is in charge of calculating the total hours that employee is clocked in for 
+	 * and will decided how many breaks the employee gets and will calculate the time that their suppose to take
+	 * their breaks.
+	 * The method decides how many breaks based on this logic:
+	 * If an employee's total time is less than 5 hours then the employee only gets a first 15 minute break
+	 * If an employee's total time is greater than or equal to 5 hours but less than or equal to 6 hours then and employee gets one 15-minute break and a 30 minute lunch
+	 * If an employee's total time is greater than 6 hours then the employee is given a two 15 minute breaks and a 30 minute lunch
+	 * @param scheduleID (int)
+	 * @throws SQLException
+	 */
 	public void scheduleBreaks(int scheduleID)throws SQLException {
 		//scheduleID = pogo.getScheduleID();
 		//String stringSchedule_id = String.valueOf(schedule_id);
