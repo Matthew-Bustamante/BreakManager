@@ -181,8 +181,8 @@ public class EmployeeManager {
 		if(isEndTimeAmOrPm.equals("PM")) {
 			int intEndTime = Integer.parseInt(endTime.substring(0,2));
 			int intNewEndTime = intEndTime + 12;
-			String startTimeMinutes = startTime.substring(3, 5);
-			endTime = Integer.toString(intNewEndTime) + ":" + startTimeMinutes + "00";
+			String endTimeMinutes = endTime.substring(3, 5);
+			endTime = Integer.toString(intNewEndTime) + ":" + endTimeMinutes + "00";
 		}
 		PreparedStatement preparedStatement = c.prepareStatement("UPDATE employees SET start_time = ?, end_time = ? WHERE name = ? ;");
 		preparedStatement.setString(1, startTime);

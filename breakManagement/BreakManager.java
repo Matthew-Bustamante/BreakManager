@@ -72,8 +72,14 @@ public class BreakManager {
 				
 				int intFirstBreak = intStartTimeHours + 2;
 				intFirstBreak = evaluateTime(intFirstBreak);
+				int intStartTime = evaluateTime(intStartTimeHours);
+				int intEndTime = evaluateTime(intEndTimeHours);
 				String strFirstBreak = intFirstBreak + ":" + startTime.substring(3,5);
-				System.out.println("|Employee Name: " + name + " | Start Time: " + startTime + " |End Time: " + endTime + " |First Break: " + strFirstBreak);
+				String strStartTime = intStartTime + ":" + startTime.substring(3,5);
+				String strEndTime = intEndTime + ":" + endTime.substring(3,5);
+				System.out.println("|Employee Name: " + name + " | Start Time: " + strStartTime + " |End Time: " + strEndTime + " |First Break: " + strFirstBreak);
+				System.out.println("________________________________________________________________________________________________________________________________________________");
+
 			}
 			
 			// if total hours are greater than 5 hours but less than or equal to 6 hours
@@ -85,9 +91,15 @@ public class BreakManager {
 				int intLunch = intStartTimeHours + 4;
 				intLunch = evaluateTime(intLunch);
 				
+				int intStartTime = evaluateTime(intStartTimeHours);
+				int intEndTime = evaluateTime(intEndTimeHours);
+				String strStartTime = intStartTime + ":" + startTime.substring(3,5);
+				String strEndTime = intEndTime + ":" + endTime.substring(3,5);
+				
 				String strFirstBreak = intFirstBreak + ":" + startTime.substring(3, 5);
 				String strLunch = intLunch + ":" + startTime.substring(3, 5);
-				System.out.println("|Employee Name: " + name + " | Start Time: " + startTime + " |End Time: " + endTime + " |First Break: " + strFirstBreak + " |Lunch: " + strLunch);
+				System.out.println("|Employee Name: " + name + " | Start Time: " + strStartTime + " |End Time: " + strEndTime + " |First Break: " + strFirstBreak + " |Lunch: " + strLunch);
+				System.out.println("________________________________________________________________________________________________________________________________________________");
 			}
 			//if total hours are greater than 6 hours then 
 			//employee gets a 1st break, lunch, and a 2nd break
@@ -101,10 +113,18 @@ public class BreakManager {
 				int intSecondBreak = intStartTimeHours + 6;
 				intSecondBreak = evaluateTime(intSecondBreak);
 				
+				int intStartTime = evaluateTime(intStartTimeHours);
+				int intEndTime = evaluateTime(intEndTimeHours);
+				
+				String strStartTime = intStartTime + ":" + startTime.substring(3,5);
+				String strEndTime = intEndTime + ":" + endTime.substring(3,5);
+				
 				String strFirstBreak = intFirstBreak + ":" + startTime.substring(3, 5);
 				String strLunch = intLunch + ":" + startTime.substring(3, 5);
 				String strSecondBreak = intSecondBreak + ":" + startTime.substring(3, 5);
-				System.out.println("|Employee Name: " + name + " | Start Time: " + startTime + "| End Time: " + endTime + " |First Break: " + strFirstBreak + " |Lunch: " + strLunch + " |SecondBreak:" + strSecondBreak);
+				System.out.println("|Employee Name: " + name + " | Start Time: " + strStartTime + "| End Time: " + strEndTime + " |First Break: " + strFirstBreak + " |Lunch: " + strLunch + " |SecondBreak:" + strSecondBreak);
+				System.out.println("________________________________________________________________________________________________________________________________________________");
+
 			}
 			
 		}
