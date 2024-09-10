@@ -175,13 +175,13 @@ public class EmployeeManager {
 			int intStartTime = Integer.parseInt(startTime.substring(0,2));
 			int intNewStartTime = intStartTime + 12;
 			String startTimeMinutes = startTime.substring(3, 5);
-			startTime = Integer.toString(intNewStartTime) + ":" + startTimeMinutes + "00";	
+			startTime = Integer.toString(intNewStartTime) + ":" + startTimeMinutes + ":00";	
 		}
 		if(isEndTimeAmOrPm.equals("PM")) {
 			int intEndTime = Integer.parseInt(endTime.substring(0,2));
 			int intNewEndTime = intEndTime + 12;
 			String endTimeMinutes = endTime.substring(3, 5);
-			endTime = Integer.toString(intNewEndTime) + ":" + endTimeMinutes + "00";
+			endTime = Integer.toString(intNewEndTime) + ":" + endTimeMinutes + ":00";
 		}
 		PreparedStatement preparedStatement = c.prepareStatement("UPDATE employees SET start_time = ?, end_time = ? WHERE name = ? ;");
 		preparedStatement.setString(1, startTime);
