@@ -12,7 +12,6 @@ import databaseManagement.DatabaseConnection;
 /**
  * EmployeeManager class that handles the creation of new employees, views employees,
  * updates employee information, and removes employees.
- * @author Matthew-Bustamante
  *
  */
 public class EmployeeManager {

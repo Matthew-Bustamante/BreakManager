@@ -6,7 +6,6 @@ package scheduleManagement;
  * Data from schedules include:
  * schedule ID (int)
  * schedule date (string)
- * @author Matthew-Bustamante
  *
  */
 public class ScheduleDataTransfer {

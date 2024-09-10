@@ -10,7 +10,6 @@ import databaseManagement.DatabaseConnection;
 
 /**
  * ScheduleManager class manages CRUD methods for the schedule table in the database.
- * @author Matthew-Bustamante
  *
  */
 public class ScheduleManager {

@@ -13,7 +13,6 @@ import employeeManagement.*;
  * BreakManager Class that schedules breaks according to an employee's start and end time.
  * The class also handles the case in which two employees are scheduled at the same time 
  * and will attempt to 'stagger' the breaks to prevent two employees from going to break at the same time
- * @author Matthew-Bustamante
  *
  */
 public class BreakManager {

@@ -11,7 +11,6 @@ import java.sql.SQLException;
 /**
  * Main class that will create and initialize objects as well as contain the UI
  * for the application
- * @author Matthew-Bustamante
  *
  */
 public class Main {
