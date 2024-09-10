@@ -35,6 +35,7 @@ public class BreakManager {
 	 */
 	public BreakManager() {
 		breaks = new ArrayList<String>();
+		
 		intStartTimeHours = 0;
 		intStartTimeMinutes = 0;
 		intEndTimeHours = 0;
@@ -51,6 +52,77 @@ public class BreakManager {
 			time = time - 12;
 		}
 		return time;
+	}
+	
+	/**
+	 * This method searches the breaks array and if a break is found then  the method returns true else false
+	 * @param currentBreak (string)
+	 * @return true if break is found & false if its not found
+	 */
+	public boolean isBreakInList(String currentBreak) {
+		boolean breakFound = false;
+		for(int i = 0; i < breaks.size(); i ++) {
+			String breakInList = breaks.get(i);
+			if (breakInList.equals(currentBreak)){
+				breakFound = true;
+				break;
+			}
+		}
+		return breakFound;
+	}
+	
+	/**
+	 * staggerBreak method: splits the time string into minutes and hours. If the minutes
+	 * are equal to the substring '00' then we can assume the time is 60 minutes and we need to 
+	 * handle that case.
+	 * Else we just subtract the minutes by fifteen, thus staggering the breaks by 15 minutes
+	 * @param currentBreak (String)
+	 * @return new staggered break time (String)
+	 */
+	public String staggerBreak(String currentBreak) {
+		String newBreak = "";
+		int hours = 0;
+		int minutes = 0;
+		String strHours = "";
+		String strMinutes = "";
+		
+		if(currentBreak.length() == 5) {
+			hours = Integer.parseInt(currentBreak.substring(0,2));
+			minutes = Integer.parseInt(currentBreak.substring(3,5));
+			strHours = currentBreak.substring(0,2);
+			strMinutes = currentBreak.substring(3,5);
+		}
+		
+		else {
+			hours = Integer.parseInt(currentBreak.substring(0,1));
+			minutes = Integer.parseInt(currentBreak.substring(2,4));
+			strHours = currentBreak.substring(0,1);
+			strMinutes = currentBreak.substring(2,4);
+		}
+		
+		if (strMinutes.equals("45")){
+			int newHours = hours + 1;
+			newBreak = Integer.toString(newHours) + ":" + "00";
+		}
+		else {
+			int newMinutes = minutes + 15;
+			newBreak = strHours + ":" + Integer.toString(newMinutes);
+		}
+		
+		return newBreak;
+	}
+	
+	/**
+	 * evaluateBreak method that will check if the break time is already taken if so it will stagger that break to ensure
+	 * that each break is unique
+	 * @param currentBreak
+	 * @return currentBreak if break is unique, returns a staggered break is break is not unique64
+	 */
+	public String evaluateBreak(String currentBreak) {
+		if(isBreakInList(currentBreak)) {
+			currentBreak = staggerBreak(currentBreak);
+		}
+		return currentBreak;
 	}
 	
 	/**
@@ -100,6 +172,10 @@ public class BreakManager {
 				int intStartTime = evaluateTime(intStartTimeHours);
 				int intEndTime = evaluateTime(intEndTimeHours);
 				String strFirstBreak = intFirstBreak + ":" + startTime.substring(3,5);
+				// Break evaluation
+				strFirstBreak = evaluateBreak(strFirstBreak); 
+				breaks.add(strFirstBreak);
+				//-----------------
 				String strStartTime = intStartTime + ":" + startTime.substring(3,5);
 				String strEndTime = intEndTime + ":" + endTime.substring(3,5);
 				System.out.println("|Employee Name: " + name + " | Start Time: " + strStartTime + " |End Time: " + strEndTime + " |First Break: " + strFirstBreak);
