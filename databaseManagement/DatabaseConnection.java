@@ -7,7 +7,6 @@ import java.sql.SQLException;
  * DatabaseConnection class:
  * Handles the connection to the database
  * Also returns the connection of the database for other classes to use the database
- * @author Matthew-Bustamante
  *
  */
 public class DatabaseConnection {

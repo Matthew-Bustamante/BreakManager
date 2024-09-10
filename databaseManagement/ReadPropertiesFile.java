@@ -5,7 +5,6 @@ import java.util.Scanner;
 import java.io.FileNotFoundException;
 /**
  * ReadPropertiesFile is a class that reads a properties file that contains sensitive information
- * @author Matthew-Bustamante
  *
  */
 public class ReadPropertiesFile {

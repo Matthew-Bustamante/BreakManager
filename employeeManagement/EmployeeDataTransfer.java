@@ -4,7 +4,6 @@ package employeeManagement;
  * EmployeeDataTransfer class:
  * This class is used as a transfer object for employee data.  This allows for data about employees
  * to be shared with other classes or with the UI
- * @author Matthew-Bustamante
  *
  */
 public class EmployeeDataTransfer {
