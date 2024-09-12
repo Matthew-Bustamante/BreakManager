@@ -79,12 +79,14 @@ public class BreakManager {
 	 * @param currentBreak (String)
 	 * @return new staggered break time (String)
 	 */
-	public String staggerBreak(String currentBreak) {
+	public String staggerBreak(String currentBreak, boolean isLunch) {
 		String newBreak = "";
 		int hours = 0;
 		int minutes = 0;
 		String strHours = "";
 		String strMinutes = "";
+		int staggerNumber = 15;
+		
 		
 		if(currentBreak.length() == 5) {
 			hours = Integer.parseInt(currentBreak.substring(0,2));
@@ -100,12 +102,18 @@ public class BreakManager {
 			strMinutes = currentBreak.substring(2,4);
 		}
 		
+		// if the break is a lunch break then the stagger number needs to increase to 30 instead of 15
+		// so the lunch break are staggered by 30 minutes instead of 15 minutes
+		if(isLunch == true) {
+			staggerNumber = 30;
+		}
+		
 		if (strMinutes.equals("45")){
 			int newHours = hours + 1;
 			newBreak = Integer.toString(newHours) + ":" + "00";
 		}
 		else {
-			int newMinutes = minutes + 15;
+			int newMinutes = minutes + staggerNumber;
 			newBreak = strHours + ":" + Integer.toString(newMinutes);
 		}
 		
@@ -118,11 +126,15 @@ public class BreakManager {
 	 * @param currentBreak
 	 * @return currentBreak if break is unique, returns a staggered break is break is not unique64
 	 */
-	public String evaluateBreak(String currentBreak) {
-		if(isBreakInList(currentBreak)) {
-			currentBreak = staggerBreak(currentBreak);
+	public String evaluateBreak(String currentBreak, boolean isLunch) {
+		//Base Case
+		if(isBreakInList(currentBreak) == false) {
+			return currentBreak;
 		}
-		return currentBreak;
+		else {
+			currentBreak = staggerBreak(currentBreak, isLunch);
+			return evaluateBreak(currentBreak, isLunch);
+		}
 	}
 	
 	/**
@@ -173,7 +185,7 @@ public class BreakManager {
 				int intEndTime = evaluateTime(intEndTimeHours);
 				String strFirstBreak = intFirstBreak + ":" + startTime.substring(3,5);
 				// Break evaluation
-				strFirstBreak = evaluateBreak(strFirstBreak); 
+				strFirstBreak = evaluateBreak(strFirstBreak, false); 
 				breaks.add(strFirstBreak);
 				//-----------------
 				String strStartTime = intStartTime + ":" + startTime.substring(3,5);
@@ -198,7 +210,15 @@ public class BreakManager {
 				String strEndTime = intEndTime + ":" + endTime.substring(3,5);
 				
 				String strFirstBreak = intFirstBreak + ":" + startTime.substring(3, 5);
+				//Break evaluation//
+				strFirstBreak = evaluateBreak(strFirstBreak, false); 
+				breaks.add(strFirstBreak);
+				//--------------------------
+				//break evaluation
 				String strLunch = intLunch + ":" + startTime.substring(3, 5);
+				strLunch = evaluateBreak(strLunch, true); 
+				breaks.add(strLunch);
+				//----------------------------------
 				System.out.println("|Employee Name: " + name + " | Start Time: " + strStartTime + " |End Time: " + strEndTime + " |First Break: " + strFirstBreak + " |Lunch: " + strLunch);
 				System.out.println("________________________________________________________________________________________________________________________________________________");
 			}
@@ -221,8 +241,20 @@ public class BreakManager {
 				String strEndTime = intEndTime + ":" + endTime.substring(3,5);
 				
 				String strFirstBreak = intFirstBreak + ":" + startTime.substring(3, 5);
+				//Break Evaluation
+				strFirstBreak = evaluateBreak(strFirstBreak, false); 
+				breaks.add(strFirstBreak);
+				//--------------------------
 				String strLunch = intLunch + ":" + startTime.substring(3, 5);
+				//Break Evaluation
+				strLunch = evaluateBreak(strLunch, true); 
+				breaks.add(strLunch);
+				//-----------------------------
 				String strSecondBreak = intSecondBreak + ":" + startTime.substring(3, 5);
+				//Break Evaluation
+				strSecondBreak = evaluateBreak(strSecondBreak, false); 
+				breaks.add(strSecondBreak);
+				//-----------------------------------
 				System.out.println("|Employee Name: " + name + " | Start Time: " + strStartTime + "| End Time: " + strEndTime + " |First Break: " + strFirstBreak + " |Lunch: " + strLunch + " |SecondBreak:" + strSecondBreak);
 				System.out.println("________________________________________________________________________________________________________________________________________________");
 
@@ -232,6 +264,7 @@ public class BreakManager {
 
 		
 		c.close();
+		breaks.clear();
 	}
 	
 	
