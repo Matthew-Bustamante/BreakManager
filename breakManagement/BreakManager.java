@@ -20,6 +20,7 @@ public class BreakManager {
 	private int intStartTimeMinutes;
 	private int intEndTimeHours;
 	private int intEndTimeMinutes;
+	private int sameTimeCount;
 	private String employeeTime;
 	private ArrayList<String> breaks;
 	private static String queryScheduleDetails = 
@@ -30,6 +31,16 @@ public class BreakManager {
 			+ " INNER JOIN schedules"
 			+ " ON schedules_employees.schedule_id = schedules.schedule_id"
 			+ " WHERE schedules.schedule_id = ?;";
+	private static String querySameEmployeeTime = 
+			"SELECT COUNT(employees.start_time) AS total"
+					+ " FROM employees"
+					+ " INNER JOIN schedules_employees"
+					+" ON schedules_employees.employee_id = employees.employee_id"
+					+ " INNER JOIN schedules"
+					+ " ON schedules_employees.schedule_id = schedules.schedule_id"
+					+ " WHERE schedules.schedule_id = ?;";
+			
+	
 	/**
 	 * Constructor
 	 */
@@ -40,6 +51,7 @@ public class BreakManager {
 		intStartTimeMinutes = 0;
 		intEndTimeHours = 0;
 		intEndTimeMinutes = 0;
+		sameTimeCount = 0;
 		String employeeTime = "";
 	}
 	/**
@@ -83,9 +95,11 @@ public class BreakManager {
 		String newBreak = "";
 		int hours = 0;
 		int minutes = 0;
+		int minuteTracker = 0;
 		String strHours = "";
 		String strMinutes = "";
 		int staggerNumber = 15;
+		int lunchStaggerDivisor = sameTimeCount - 1;
 		
 		
 		if(currentBreak.length() == 5) {
@@ -105,17 +119,29 @@ public class BreakManager {
 		// if the break is a lunch break then the stagger number needs to increase to 30 instead of 15
 		// so the lunch break are staggered by 30 minutes instead of 15 minutes
 		if(isLunch == true) {
-			staggerNumber = 30;
+			staggerNumber = 30 / lunchStaggerDivisor;
 		}
 		
-		if (strMinutes.equals("45")){
+		int newMinutes = minutes + staggerNumber;
+		//If the calculated minutes is eqaul to 60
+		//then we need to increase the hour and set minutes to 0
+		if (newMinutes == 60) {
 			int newHours = hours + 1;
 			newBreak = Integer.toString(newHours) + ":" + "00";
 		}
+		//if the calculated minutes is greater than 60
+		// then we need to increase the hour and add the remaining minutes to the minutes
+		else if (newMinutes > 60) {
+			int remainingMinutes = newMinutes - 60;
+			int newHours = hours + 1;
+			newBreak = Integer.toString(newHours) + ":" + Integer.toString(remainingMinutes);
+		}
+		//else calculate the new break normally
 		else {
-			int newMinutes = minutes + staggerNumber;
 			newBreak = strHours + ":" + Integer.toString(newMinutes);
 		}
+			
+		
 		
 		return newBreak;
 	}
@@ -131,6 +157,7 @@ public class BreakManager {
 		if(isBreakInList(currentBreak) == false) {
 			return currentBreak;
 		}
+		//Recursive Call
 		else {
 			currentBreak = staggerBreak(currentBreak, isLunch);
 			return evaluateBreak(currentBreak, isLunch);
@@ -157,8 +184,15 @@ public class BreakManager {
 		Connection c = dbConnect.getConnection();
 		
 		PreparedStatement preparedStatement = c.prepareStatement(queryScheduleDetails);
+		PreparedStatement preparedStatement2 = c.prepareStatement(querySameEmployeeTime);
+		preparedStatement2.setInt(1, scheduleID);
 		preparedStatement.setInt(1, scheduleID);
 		ResultSet rs = preparedStatement.executeQuery();
+		ResultSet rs2 = preparedStatement2.executeQuery();
+		
+		while (rs2.next()) {
+			sameTimeCount = rs2.getInt("total");
+		}
 
 		while(rs.next()) {
 			//String date = rs.getString("date");
