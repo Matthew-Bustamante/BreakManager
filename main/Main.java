@@ -141,7 +141,7 @@ public class Main {
 										System.out.println("Is This Time AM or PM?");
 										String endTimeAMorPM = sc.nextLine();
 										//em.updateEmployeeTime(userInputStartTime, userInputEndTime, userInputEmployeeName, startTimeAMorPM, endTimeAMorPM);
-										tm.createTime(userInputStartTime, userInputEndTime, startTimeAMorPM, endTimeAMorPM, employeeID, scheduleID);
+										tm.createTime(userInputStartTime, userInputEndTime, startTimeAMorPM, endTimeAMorPM, scheduleID, employeeID);
 										sm.addEmployeeToSchedule(scheduleID, employeeID);
 										System.out.println("Employee Added to Schedule");
 									}

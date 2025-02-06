@@ -30,11 +30,11 @@ public class TimeManager {
 			String endTimeMinutes = endTime.substring(3, 5);
 			endTime = Integer.toString(intNewEndTime) + ":" + endTimeMinutes + ":00";
 		}
-		PreparedStatement preparedStatement = c.prepareStatement("INSERT INTO start_end_time (start_time, end_time, employee_id, schedule_id) VALUES (?, ?, ?, ?);");
+		PreparedStatement preparedStatement = c.prepareStatement("INSERT INTO start_end_time (start_time, end_time, schedule_id, employee_id) VALUES (?, ?, ?, ?);");
 		preparedStatement.setString(1, startTime);
 		preparedStatement.setString(2,  endTime);
-		preparedStatement.setInt(3, employeeID);
-		preparedStatement.setInt(4, scheduleID);
+		preparedStatement.setInt(3, scheduleID);
+		preparedStatement.setInt(4, employeeID);
 		preparedStatement.executeUpdate();
 		
 		preparedStatement.close();
