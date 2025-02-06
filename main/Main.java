@@ -163,6 +163,7 @@ public class Main {
 					}
 					else if (input2.equals("7")) {
 						boolean notExit = true;
+
 						while(notExit) {
 							System.out.println("Select a Schedule or press 1 to exit");
 							sm.readSchedule();
@@ -173,6 +174,7 @@ public class Main {
 							}
 							
 							else if (scheduleInDB == true) {
+								//BreakManager bm = new BreakManager();
 								ScheduleDataTransfer scheduleResults = sm.setScheduleID(userInput);
 								bm.scheduleBreaks(scheduleResults.getScheduleID());
 							}
