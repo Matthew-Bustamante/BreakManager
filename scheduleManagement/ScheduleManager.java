@@ -23,7 +23,7 @@ public class ScheduleManager {
 			+ " INNER JOIN schedules"
 			+ " ON schedules_employees.schedule_id = schedules.schedule_id"
 			+ " INNER JOIN start_end_time"
-			+ " ON start_end_time.schedule_id = schedules.schedule_id"
+			+ " ON start_end_time.employee_id = employees.employee_id"
 			+ " WHERE schedules.schedule_id = ?;";
 	public ScheduleManager() {
 		pogo = new ScheduleDataTransfer();
