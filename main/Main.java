@@ -7,6 +7,7 @@ import employeeManagement.EmployeeDataTransfer;
 import employeeManagement.EmployeeManager;
 import scheduleManagement.ScheduleDataTransfer;
 import scheduleManagement.ScheduleManager;
+import timeManagement.TimeManager;
 import java.sql.SQLException;
 /**
  * Main class that will create and initialize objects as well as contain the UI
@@ -20,6 +21,7 @@ public class Main {
 		ScheduleManager sm = new ScheduleManager();
 		EmployeeManager em = new EmployeeManager();
 		BreakManager bm = new BreakManager();
+		TimeManager tm = new TimeManager();
 		//-----------------------------------------//
 		Scanner sc = new Scanner(System.in);
 		
@@ -138,7 +140,8 @@ public class Main {
 										String userInputEndTime = sc.nextLine();
 										System.out.println("Is This Time AM or PM?");
 										String endTimeAMorPM = sc.nextLine();
-										em.updateEmployeeTime(userInputStartTime, userInputEndTime, userInputEmployeeName, startTimeAMorPM, endTimeAMorPM);
+										//em.updateEmployeeTime(userInputStartTime, userInputEndTime, userInputEmployeeName, startTimeAMorPM, endTimeAMorPM);
+										tm.createTime(userInputStartTime, userInputEndTime, startTimeAMorPM, endTimeAMorPM, scheduleID, employeeID);
 										sm.addEmployeeToSchedule(scheduleID, employeeID);
 										System.out.println("Employee Added to Schedule");
 									}

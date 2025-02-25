@@ -24,7 +24,7 @@ public class EmployeeManager {
 	public EmployeeManager() {
 	}
 	/**
-	 * Creates a new employee in the database and sets their start_time and end_time to NULL
+	 * Creates a new employee in the database, setting the name of the employee
 	 * @param name of employees
 	 * @throws SQLException
 	 */
@@ -34,7 +34,7 @@ public class EmployeeManager {
 		Connection c = dbConnect.getConnection();
 		
 		//Statement s = c.createStatement();
-		PreparedStatement preparedStatement = c.prepareStatement("INSERT INTO employees (name, start_time, end_time) VALUES (?, NULL, NULL)");
+		PreparedStatement preparedStatement = c.prepareStatement("INSERT INTO employees (name) VALUES (?)");
 		preparedStatement.setString(1, name);
 		//preparedStatement.setString(2, startTime);
 		//preparedStatement.setString(3, endTime);
