@@ -97,8 +97,8 @@ public class BreakManager {
 		String strHours = "";
 		String strMinutes = "";
 		int staggerNumber = 15;
-		//int lunchStaggerDivisor = sameTimeCount - 1;
-		int lunchStaggerDivisor = 1;
+		int lunchStaggerDivisor = sameTimeCount - 1;
+		//int lunchStaggerDivisor = 1;
 		
 		
 		if(currentBreak.length() == 5) {
