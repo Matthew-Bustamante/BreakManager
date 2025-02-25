@@ -25,14 +25,12 @@ public class BreakManager {
 	private ArrayList<String> breaks;
 	private static String queryScheduleDetails = 
 			"SELECT schedules.date, employees.name, start_end_time.start_time, start_end_time.end_time"
-			+ " FROM employees"
-			+ " INNER JOIN schedules_employees"
-			+" ON schedules_employees.employee_id = employees.employee_id"
-			+ " INNER JOIN start_end_time"
-			+ " ON employees.employee_id = start_end_time.employee_id"
-			+ " INNER JOIN schedules"
-			+ " ON schedules_employees.schedule_id = schedules.schedule_id"
-			+ " WHERE schedules.schedule_id = ?;";
+					+ " FROM employees"
+					+ " INNER JOIN start_end_time"
+					+ " ON employees.employee_id = start_end_time.employee_id"
+					+ " INNER JOIN schedules"
+					+ " ON start_end_time.schedule_id = schedules.schedule_id"
+					+ " WHERE schedules.schedule_id = ?;";
 	private static String querySameEmployeeTime = 
 			"SELECT COUNT(start_end_time.start_time) AS total"
 					+ " FROM start_end_time"
@@ -99,7 +97,8 @@ public class BreakManager {
 		String strHours = "";
 		String strMinutes = "";
 		int staggerNumber = 15;
-		int lunchStaggerDivisor = sameTimeCount - 1;
+		//int lunchStaggerDivisor = sameTimeCount - 1;
+		int lunchStaggerDivisor = 1;
 		
 		
 		if(currentBreak.length() == 5) {

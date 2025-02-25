@@ -16,14 +16,12 @@ public class ScheduleManager {
 	private Connection dbConnection;
 	private ScheduleDataTransfer pogo;
 	private static String sqlQueryForDetails = 
-			"SELECT schedules.date,employees.name, start_end_time.start_time, start_end_time.end_time"
+			"SELECT schedules.date, employees.name, start_end_time.start_time, start_end_time.end_time"
 			+ " FROM employees"
-			+ " INNER JOIN schedules_employees"
-			+" ON schedules_employees.employee_id = employees.employee_id"
-			+ " INNER JOIN schedules"
-			+ " ON schedules_employees.schedule_id = schedules.schedule_id"
 			+ " INNER JOIN start_end_time"
-			+ " ON start_end_time.employee_id = employees.employee_id"
+			+ " ON employees.employee_id = start_end_time.employee_id"
+			+ " INNER JOIN schedules"
+			+ " ON start_end_time.schedule_id = schedules.schedule_id"
 			+ " WHERE schedules.schedule_id = ?;";
 	public ScheduleManager() {
 		pogo = new ScheduleDataTransfer();
